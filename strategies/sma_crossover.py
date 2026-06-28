@@ -1,20 +1,31 @@
-from data.download import download_stock
+class SMACrossover:
+    def generate_signal(self,data):
 
-data = download_stock("RELIANCE.NS","6mo")
+        data = data.copy()
 
-data["SMA20"] = data["Close"].rolling(20).mean()
-data["SMA50"] = data["Close"].rolling(50).mean()
+        data.columns = data.columns.get_level_values(0)
 
-data["Signal"] = (data["SMA20"] > data["SMA50"]).astype(int)
+        data["SMA20"] = data["Close"].rolling(20).mean()
+        data["SMA50"] = data["Close"].rolling(50).mean()
 
-for i in range(len(data["Signal"])):
-    if i==0:
-        data.loc[i,"Sigout"]="Hold"
-    else:
-        if (data.loc[i,"Signal"]-data.loc[i-1,"Signal"])==1: 
-            data.loc[i,"Sigout"]="Buy"
-        elif (data.loc[i,"Signal"]-data.loc[i-1,"Signal"])==-1:
-            data.loc[i,"Sigout"]="Sell"
-        else :
-            data.loc[i,"Sigout"]="Hold"
-print(data.loc[data["Sigout"]=="Sell"])
+        data["Signal"] = (data["SMA20"] > data["SMA50"]).astype(int)
+
+        data["Position"] = 0
+
+        signal_col = data.columns.get_loc("Signal")
+        position_col = data.columns.get_loc("Position")
+
+        for i in range(1, len(data)):
+
+            diff = data.iloc[i, signal_col] - data.iloc[i - 1, signal_col]
+
+            if diff == 1:
+                data.iloc[i, position_col] = 1
+
+            elif diff == -1:
+                data.iloc[i, position_col] = -1
+
+            else :
+                data.iloc[i, position_col] = 0
+        return data
+
