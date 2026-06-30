@@ -2,8 +2,16 @@ from data.download import download_stock
 from strategies.sma_crossover import SMACrossover
 from portfolio.portfolio import Portfolio
 from Execution.Executor import Executor
+from storage.storage import Storage
+from analytics.performance import get_summary
 
-ticker = "RELIANCE.NS"
+from pathlib import Path
+
+Path("storage/equity_curve.csv").unlink(missing_ok=True)
+Path("storage/trades.csv").unlink(missing_ok=True)
+Path("storage/portfolio.csv").unlink(missing_ok=True)
+
+ticker = "TCS.NS"
 
 # Download Data
 data = download_stock(ticker, "6mo")
@@ -26,6 +34,16 @@ current_prices = {
     ticker: latest_price
 }
 
+Storage.save_trades(portfolio.trade_history)
+
+portfolio_data = [{
+    "Cash": portfolio.cash,
+    "Holdings": str(portfolio.holdings)
+}]
+
+Storage.save_portfolio(portfolio_data)
+
+
 print("\nPortfolio Summary")
 print("-" * 40)
 print("Cash:", portfolio.cash)
@@ -35,3 +53,8 @@ print("Trade History:")
 
 for trade in portfolio.trade_history:
     print(trade)
+
+
+
+summary=get_summary()
+print(summary)

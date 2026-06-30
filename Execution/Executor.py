@@ -1,3 +1,5 @@
+from storage.storage import Storage
+
 class Executor:
 
     def execute(self,signal_data,portfolio,ticker):
@@ -21,4 +23,13 @@ class Executor:
             elif prev_signal == 1 and current_signal == 0:
 
                 portfolio.sell(price, ticker)
+            
+            today_value = portfolio.portfolio_value({ticker: price})
+            today_date = signal_data.iloc[i]["Date"]
 
+            Storage.append_equity_curve(
+                today_date,
+                portfolio.cash,
+                today_value - portfolio.cash,
+                today_value
+            )
