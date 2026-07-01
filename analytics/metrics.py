@@ -1,3 +1,5 @@
+import math
+import pandas as pd
 class Metrics:
 
     @staticmethod
@@ -11,21 +13,59 @@ class Metrics:
 
         return ((final_value - initial_value) / initial_value) * 100
 
-    # @staticmethod
-    # def calculate_daily_returns(equity_curve):
-    #     ...
+    @staticmethod
+    def calculate_daily_returns(equity_curve):
+        
+        return equity_curve["Portfolio Value"].pct_change().dropna()
 
-    # @staticmethod
-    # def calculate_volatility(daily_returns):
-    #     ...
+    @staticmethod
+    def calculate_volatility(daily_returns):
+        
+        return_mean=daily_returns.mean()
+        k=len(daily_returns)
+        sum=0
+        
+        for i in range(k):
+            sum+=(daily_returns.iloc[i]-return_mean)**2
+        
+        volatilities = math.sqrt(sum/(k-1))
+        
+        return volatilities
 
-    # @staticmethod
-    # def calculate_sharpe_ratio(daily_returns, risk_free_rate=0):
-    #     ...
+    @staticmethod
+    def calculate_sharpe_ratio(daily_returns,risk_free_rate=0):
+        
+        volatility = Metrics.calculate_volatility(daily_returns)
 
-    # @staticmethod
-    # def calculate_max_drawdown(equity_curve):
-    #     ...
+        if volatility == 0:
+            return 0
+
+        average_return = daily_returns.mean()
+        daily_rf = risk_free_rate / 252
+
+        sharpe = (average_return - daily_rf) / volatility
+
+        return sharpe
+
+
+    @staticmethod
+    def calculate_max_drawdown(equity_curve):
+
+        portfolio_values = equity_curve["Portfolio Value"]
+
+        peak = portfolio_values.iloc[0]
+        max_drawdown = 0
+        drawdown=0
+
+        running_peak = equity_curve["Portfolio Value"].cummax()
+
+        drawdowns = (equity_curve["Portfolio Value"] - running_peak) / running_peak
+        max_drawdown = abs(drawdowns.min()) * 100
+            
+        return max_drawdown * 100
+            
+
+
 
     # @staticmethod
     # def calculate_win_rate(trades):

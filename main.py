@@ -11,7 +11,7 @@ Path("storage/equity_curve.csv").unlink(missing_ok=True)
 Path("storage/trades.csv").unlink(missing_ok=True)
 Path("storage/portfolio.csv").unlink(missing_ok=True)
 
-ticker = "TCS.NS"
+ticker = "ADANIPOWER.NS"
 
 # Download Data
 data = download_stock(ticker, "6mo")
