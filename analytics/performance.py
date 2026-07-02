@@ -15,6 +15,6 @@ def get_summary():
         "Volatility": Metrics.calculate_volatility(daily_returns),
         "Sharpe": Metrics.calculate_sharpe_ratio(daily_returns),
         "Max Drawdown": Metrics.calculate_max_drawdown(equity_curve),
-        # "Win Rate": Metrics.calculate_win_rate(trades),
+        "Win Rate": Metrics.calculate_win_rate(trades),
     }
     return summary

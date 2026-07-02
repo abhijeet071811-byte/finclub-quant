@@ -52,20 +52,42 @@ class Metrics:
 
         portfolio_values = equity_curve["Portfolio Value"]
         peak=portfolio_values.iloc[0]
-        trough=peak
         drawdowns=[0]
+
         for value in portfolio_values:
+
             if value>peak:
+
                 peak=value
+
             if value<peak:
-                trough=value
-                drawdown=(peak-trough)/peak
+
+                drawdown=(peak-value)/peak
                 drawdowns.append(drawdown)
+
         return max(drawdowns)*100
             
     @staticmethod
     def calculate_win_rate(trades):
-        ...
+        act_outcomes=[0]
+
+        for i in range(len(trades)):
+            
+            if trades["Action"].iloc[i]=="BUY":
+                buy_price=trades["Price"].iloc[i]
+                quantity=trades["Quantity"].iloc[i]
+            
+            elif trades["Action"].iloc[i]=="SELL":
+                sell_price=trades["Price"].iloc[i]
+                act_outcome=(sell_price-buy_price)*quantity
+                act_outcomes.append(act_outcome)
+        
+        win_rate=0
+        for act in act_outcomes:
+            if act>0:
+                win_rate+=1
+        
+        return win_rate/len(act_outcomes)
 
     # @staticmethod
     # def calculate_average_profit(trades):
