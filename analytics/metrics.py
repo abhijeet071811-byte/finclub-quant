@@ -47,29 +47,25 @@ class Metrics:
 
         return sharpe
 
-
     @staticmethod
     def calculate_max_drawdown(equity_curve):
 
         portfolio_values = equity_curve["Portfolio Value"]
-
-        peak = portfolio_values.iloc[0]
-        max_drawdown = 0
-        drawdown=0
-
-        running_peak = equity_curve["Portfolio Value"].cummax()
-
-        drawdowns = (equity_curve["Portfolio Value"] - running_peak) / running_peak
-        max_drawdown = abs(drawdowns.min()) * 100
+        peak=portfolio_values.iloc[0]
+        trough=peak
+        drawdowns=[0]
+        for value in portfolio_values:
+            if value>peak:
+                peak=value
+            if value<peak:
+                trough=value
+                drawdown=(peak-trough)/peak
+                drawdowns.append(drawdown)
+        return max(drawdowns)*100
             
-        return max_drawdown * 100
-            
-
-
-
-    # @staticmethod
-    # def calculate_win_rate(trades):
-    #     ...
+    @staticmethod
+    def calculate_win_rate(trades):
+        ...
 
     # @staticmethod
     # def calculate_average_profit(trades):
