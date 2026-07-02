@@ -1,28 +1,28 @@
-# FinClub Quant
+# 📈 FinClub Quant
 
-An open-source quantitative investing platform developed by students.
+FinClub Quant is a modular algorithmic backtesting framework developed for the Fin Club at IIT Patna.
 
-## Current Version
+The objective of the project is to provide an extensible platform for designing, testing, analyzing, and visualizing quantitative trading strategies. The architecture has been designed to allow future expansion into portfolio optimization, risk analytics, multiple strategy support, and live trading integrations.
 
-v0.1.0
+---
 
-## Features
+## Current Features
 
-- Market Data Engine
-- SMA Strategy
-- Execution Engine
-- Portfolio Engine
-- Portfolio Valuation
+- Historical market data download
+- SMA Crossover strategy
+- Portfolio simulation
+- Trade execution engine
+- Portfolio valuation
+- Persistent storage
+- Performance analytics
+- Interactive Streamlit dashboard
 
-## Roadmap
+---
 
-- [x] Market Data
-- [x] Strategy Engine
-- [x] Execution Engine
-- [x] Portfolio Engine
-- [x] Portfolio Valuation
-- [ ] CSV Storage
-- [ ] Performance Metrics
-- [ ] Streamlit Dashboard
-- [ ] Backtesting
-- [ ] Multiple Strategies
+## Technology Stack
+
+- Python
+- Pandas
+- NumPy
+- yFinance
+- Streamlit
